@@ -4,7 +4,7 @@ const { sign, verify } = require("jsonwebtoken")
 
 const createTokens = (user) => {
     const accessToken = sign({ email: user.email, id: user.id, name: user.name, surname: user.surname, username: user.username}, 
-        `${process.env.ACCESS_TOKEN_SECRET}`, { expiresIn: "10080m", secure: true, sameSite: "none" })
+        `${process.env.ACCESS_TOKEN_SECRET}`, { expiresIn: "10080m"})
 
     return accessToken
 }
