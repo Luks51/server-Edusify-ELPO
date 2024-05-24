@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
             })
         
             if (user) {
-                res.json({ error: "User already exist" });
+                res.json({ error: "Korisnik već postoji" });
             } else if (uapp == 1) {
                 bcrypt.hash(password, 10).then((hash) => {
                     Users.create({
@@ -37,17 +37,17 @@ router.post("/", async (req, res) => {
                         password: hash,
                         uapp: uapp
                     }).then(() => {
-                        res.json("SUCCESS")
+                        res.json("Uspješno")
                       }).catch(() => {
-                        res.json({ error: "Invalid input" })
+                        res.json({ error: "Neispravan unos" })
                       })
                     
                 })
             } else {
-                res.json({ error: "You have to accept User Agreement and Privacy Policy" })
+                res.json({ error: "Morate prihvatiti Uvjete korištenja i Pravila privatnosti" })
             }
         } else {
-            res.json({ error: "You must fill in all the required fields" })
+            res.json({ error: "Morate popuniti sva obavezna polja" })
         }
 })
 
@@ -57,11 +57,11 @@ router.post("/login", async (req, res) => {
     const user = await Users.findOne({ where: {email: email} })
 
     if (!user) {
-        res.json({ error: "User dosen't exist" })
+        res.json({ error: "Korisnik ne postoji" })
     } else {
         bcrypt.compare(password, user.password).then((match) => {
             if (!match) {
-                res.json({ error: "Wrong email or password" })
+                res.json({ error: "Neispravna email adresa ili lozinka" })
             } else {
 
                 const accessToken = createTokens(user)
@@ -85,7 +85,7 @@ router.put("/user", validateToken, async (req, res) => {
     const userUsername = await Users.findOne({ where: { username: username }})
     const userEmail = await Users.findOne({ where: { email: email }})
     if (user.email == email && user.username == username && user.name == name && user.surname == surname) {
-        res.json("No changes")
+        res.json("Nema promjene")
     } else if (user.email == email && user.username == username) {
         await Users.update({ name: name, surname: surname}, { where: { id: id }})
         const userUpdate = await Users.findOne({ where: { id: id }})
@@ -94,7 +94,7 @@ router.put("/user", validateToken, async (req, res) => {
             maxAge: 1000*60*60*24*7,
             httpOnly: true
         })
-        res.json({ success: "Successfully changed data" })
+        res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userUsername && !userEmail) {
         await Users.update({ username: username, email: email }, { where: { id: id }})
         const userUpdate = await Users.findOne({ where: { id: id }})
@@ -103,7 +103,7 @@ router.put("/user", validateToken, async (req, res) => {
             maxAge: 1000*60*60*24*7,
             httpOnly: true
         })
-        res.json({ success: "Successfully changed data" })
+        res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userUsername && user.email == email) {
         await Users.update({ username: username }, { where: { id: id }})
         const userUpdate = await Users.findOne({ where: { id: id }})
@@ -112,7 +112,7 @@ router.put("/user", validateToken, async (req, res) => {
             maxAge: 1000*60*60*24*7,
             httpOnly: true
         })
-        res.json({ success: "Successfully changed data" })
+        res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userEmail && user.username == username) {
         await Users.update({ email: email }, { where: { id: id }})
         const userUpdate = await Users.findOne({ where: { id: id }})
@@ -121,9 +121,9 @@ router.put("/user", validateToken, async (req, res) => {
             maxAge: 1000*60*60*24*7,
             httpOnly: true
         })
-        res.json({ success: "Successfully changed data" })
+        res.json({ success: "Uspješno promijenjeni podaci" })
     } else {
-        res.json({ error: "User already exist" })
+        res.json({ error: "Korisnik već postoji" })
     }
     
 })
@@ -134,11 +134,11 @@ router.put("/changepassword", validateToken, async (req, res) => {
 
     bcrypt.compare(oldPassword, user.password).then(async (match) => {
         if (!match) {
-            res.json({ error: "Wrong password entered!" })
+            res.json({ error: "Unesena neispravna lozinka!" })
         } else {
             bcrypt.hash(password, 10).then((hash) => {
                 Users.update({ password: hash }, { where: { id: user.id } })
-                res.json({ success: "Successfully changed password" })
+                res.json({ success: "Uspješno promijenjena lozinka" })
             })
         }
     })
@@ -160,7 +160,7 @@ router.post("/forgot-password", async (req, res) => {
         const oldUser = await Users.findOne({ where: { email: email }})
         console.log(oldUser)
         if (!oldUser) {
-            res.json({ error: "User dosen't exist" })
+            res.json({ error: "Korisnik ne postoji" })
         } else {
             oldUserPassword = oldUser.password
             const accessToken = createTokenForgotPassword(oldUser, oldUserPassword)
@@ -176,17 +176,17 @@ router.post("/forgot-password", async (req, res) => {
             var mailOptions = {
                 from: process.env.EMAIL,
                 to: email,
-                subject: 'Edusify - Password Reset',
+                subject: 'Edusify - Promjena lozinke',
                 text: `
-Hi ${oldUser.username},
+Pozdrav ${oldUser.username},
 
-Click here to reset your password:
+Kliknite ovdje za ponovno postavljanje lozinke:
 ${link}
 
-Please don't share this link with anyone, and only use it for Edusfiy.
+Molimo ne dijelite ovu poveznicu ni s kim i koristite je samo za Edusfiy.
 
-Thanks,
-Team Edusify
+Hvala.
+Tim Edusify
 `
             }
               
@@ -194,10 +194,10 @@ Team Edusify
                 if (error) {
                   console.log(error)
                 } else {
-                  console.log('Email sent: ' + info.response)
+                  console.log('Email poslan: ' + info.response)
                 }
             })
-            res.json({ success: "Successfully submited, check your email" })
+            res.json({ success: "Uspješno poslano, provjerite svoju email adresu" })
         }
     } catch (error) {
         console.log(error)
@@ -208,7 +208,7 @@ router.put("/reset-password/:id/:accessToken", async (req, res) => {
     const { id, accessToken } = req.params
     const oldUser = await Users.findOne({ where: { id: id }})
     if (!oldUser) {
-        res.json({ error: "User dosen't exist" })
+        res.json({ error: "Korisnik ne postoji" })
     } else {
         oldUserPassword = oldUser.password
         try {
@@ -219,13 +219,13 @@ router.put("/reset-password/:id/:accessToken", async (req, res) => {
                     { password: hash },
                     { where: { id: id } }
                 ).then(() => {
-                    res.json({ success: "Successfully changed password" })
+                    res.json({ success: "Uspješno promijenjena lozinka" })
                 }).catch(() => {
-                    res.json({ error: "Invalid input" })
+                    res.json({ error: "Neispravan unos" })
                 })
             })
         } catch (err) {
-            res.json({ error: "Invalid password change request" })
+            res.json({ error: "Neispravan zahtjev za promjenu lozinke" })
         }
     }
 })

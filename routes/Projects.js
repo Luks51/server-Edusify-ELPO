@@ -32,10 +32,10 @@ router.get("/byId/:id", validateToken, async (req, res) => {
         } else if(project.UserId == userid) {
             res.json(project)
         } else {
-            res.json({ error: "The project either doesn't exist or has been deleted" })
+            res.json({ error: "Projekt ili ne postoji ili je izbrisan" })
         }
     } else {
-        res.json({ error: "The project either doesn't exist or has been deleted" })
+        res.json({ error: "Projekt ili ne postoji ili je izbrisan" })
     }
 })
 
@@ -57,10 +57,10 @@ router.post("/byUsername/:username", validateToken, async (req, res) => {
         if (user) {
             res.json(listOfProjects)
         } else {
-            res.json({ error: "The user doesn't exist" })
+            res.json({ error: "Korisnik ne postoji" })
         }
     } else {
-        res.json({ error: "The user doesn't exist" })
+        res.json({ error: "Korisnik ne postoji" })
     }
     
 })

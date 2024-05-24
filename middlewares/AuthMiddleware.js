@@ -20,10 +20,8 @@ const createTokenForgotPassword = (user, oldUserPassword) => {
 const validateToken = (req, res, next) => {
     const accessToken = req.cookies["access-token"]
 
-    console.log(accessToken);
-
     if (!accessToken)
-        return res.json({ error: "User not Authenticated!" })
+        return res.json({ error: "Korisnik nije autentificiran!" })
 
     try {
         const validToken = verify(accessToken, `${process.env.ACCESS_TOKEN_SECRET}`)
