@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 const maxRequestBodySize = "50mb";
 app.use(express.json({ limit: maxRequestBodySize }));
 corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://client-edusify-elpo-public.onrender.com/",
   credentials: true,
 };
 app.use(express.urlencoded({ limit: maxRequestBodySize }));
