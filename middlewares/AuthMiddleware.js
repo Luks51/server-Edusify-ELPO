@@ -20,6 +20,8 @@ const createTokenForgotPassword = (user, oldUserPassword) => {
 const validateToken = (req, res, next) => {
     const accessToken = req.cookies["access-token"]
 
+    console.log(accessToken);
+
     if (!accessToken)
         return res.json({ error: "User not Authenticated!" })
 
