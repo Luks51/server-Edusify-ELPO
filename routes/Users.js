@@ -92,7 +92,9 @@ router.put("/user", validateToken, async (req, res) => {
         const accessToken = createTokens(userUpdate)
         res.cookie("access-token", accessToken, {
             maxAge: 1000*60*60*24*7,
-            httpOnly: true
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
         })
         res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userUsername && !userEmail) {
@@ -101,7 +103,9 @@ router.put("/user", validateToken, async (req, res) => {
         const accessToken = createTokens(userUpdate)
         res.cookie("access-token", accessToken, {
             maxAge: 1000*60*60*24*7,
-            httpOnly: true
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
         })
         res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userUsername && user.email == email) {
@@ -110,7 +114,9 @@ router.put("/user", validateToken, async (req, res) => {
         const accessToken = createTokens(userUpdate)
         res.cookie("access-token", accessToken, {
             maxAge: 1000*60*60*24*7,
-            httpOnly: true
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
         })
         res.json({ success: "Uspješno promijenjeni podaci" })
     } else if (!userEmail && user.username == username) {
@@ -119,7 +125,9 @@ router.put("/user", validateToken, async (req, res) => {
         const accessToken = createTokens(userUpdate)
         res.cookie("access-token", accessToken, {
             maxAge: 1000*60*60*24*7,
-            httpOnly: true
+            httpOnly: true,
+            sameSite: 'none',
+            secure: true
         })
         res.json({ success: "Uspješno promijenjeni podaci" })
     } else {
